@@ -1,3 +1,5 @@
+import 'dart:math';
+
 List gameLogic({required List all, required String task}) {
 
   // List all = [
@@ -7,7 +9,6 @@ List gameLogic({required List all, required String task}) {
   //   [2, 2, 0, 2]
   // ];
   List changed = [];
-  int i = 4; //1 for left , 2 for right, 3 for Down , 4 for Up
   switch (task) {
     case ("L" || "l"):
       for (int i = 0; i < 4; i++) {
@@ -40,10 +41,10 @@ List gameLogic({required List all, required String task}) {
         changed = up;
       }
   }
-  print(changed[0]);
-  print(changed[1]);
-  print(changed[2]);
-  print(changed[3]);
+  // print(changed[0]);
+  // print(changed[1]);
+  // print(changed[2]);
+  // print(changed[3]);
   return changed;
 }
 
@@ -169,4 +170,40 @@ List addRight(List l) {
     }
   }
   return l;
+}
+
+
+
+List getSingleList(List original) {
+  List converted = [];
+  for (int i = 0; i <= 3; i++) {
+    for (int j = 0; j <= 3; j++) {
+      converted.add(original[i][j]);
+    }
+  }
+  return converted;
+}
+
+
+List randomTwoGenerator(original) {
+  Random random = Random();
+  List emptyCells = [];
+
+  // Collect all empty cell positions
+  for (int r = 0; r < 4; r++) {
+    for (int c = 0; c < 4; c++) {
+      if (original[r][c] == 0) {
+        emptyCells.add([r, c]);
+      }
+    }
+  }
+
+  // If there are empty cells, place a 2 in one of them
+  if (emptyCells.isNotEmpty) {
+    int randomIndex = random.nextInt(emptyCells.length);
+    List<int> cell = emptyCells[randomIndex];
+    original[cell[0]][cell[1]] = 2;
+  }
+
+  return original;
 }

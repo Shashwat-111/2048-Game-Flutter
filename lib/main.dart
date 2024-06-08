@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:game_2048/game_logic.dart';
 
 void main() {
@@ -31,64 +32,114 @@ class _MyAppState extends State<MyApp> {
 
     return MaterialApp(
       home: Scaffold(
-        body: Center(
-          child: Column(
-            children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 2,
-                width: MediaQuery.of(context).size.height / 2,
-                child: GridView.builder(
-                  itemCount: newList.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10),
-                  itemBuilder: (context, index) {
-                    return Container(
-                      color: Colors.black,
-                      height: 10,
-                      width: 30,
-                      child: Center(
-                          child: Text(
-                        newList[index].toString(),
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: MediaQuery.of(context).size.height / 17),
-                      )),
-                    );
-                  },
-                ),
+        body: Shortcuts(
+          shortcuts: {
+            LogicalKeySet(LogicalKeyboardKey.arrowUp): UpIntent(),
+            LogicalKeySet(LogicalKeyboardKey.arrowDown): DownIntent(),
+            LogicalKeySet(LogicalKeyboardKey.arrowLeft): LeftIntent(),
+            LogicalKeySet(LogicalKeyboardKey.arrowRight): RightIntent(),
+          },
+          child: Actions(
+            actions: {
+              UpIntent: CallbackAction<UpIntent>(
+                  onInvoke: (intent) => {
+                        setState(() {
+                          all = gameLogic(all: all, task: "U");
+                          all = randomTwoGenerator(all);
+                        })
+                      }),
+              DownIntent: CallbackAction<DownIntent>(
+                  onInvoke: (intent) => {
+                        setState(() {
+                          all = gameLogic(all: all, task: "D");
+                          all = randomTwoGenerator(all);
+                        })
+                      }),
+              LeftIntent: CallbackAction<LeftIntent>(
+                  onInvoke: (intent) => {
+                        setState(() {
+                          all = gameLogic(all: all, task: "L");
+                          all = randomTwoGenerator(all);
+                        })
+                      }),
+              RightIntent: CallbackAction<RightIntent>(
+                  onInvoke: (intent) => {
+                        setState(() {
+                          all = gameLogic(all: all, task: "R");
+                          all = randomTwoGenerator(all);
+                        })
+                      }),
+            },
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height / 2,
+                    width: MediaQuery.of(context).size.height / 2,
+                    child: Focus(
+                      autofocus: true,
+                      child: GridView.builder(
+                        itemCount: newList.length,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 4,
+                                crossAxisSpacing: 10,
+                                mainAxisSpacing: 10),
+                        itemBuilder: (context, index) {
+                          return Container(
+                            color: Colors.black,
+                            height: 10,
+                            width: 30,
+                            child: Center(
+                                child: Text(
+                              newList[index].toString(),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize:
+                                      MediaQuery.of(context).size.height / 17),
+                            )),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  // TextButton(
+                  //     onPressed: () {
+                  //       setState(() {
+                  //         all = gameLogic(all: all, task: "D");
+                  //         all = randomTwoGenerator(all);
+                  //       });
+                  //     },
+                  //     child: const Text("Down")),
+                  // TextButton(
+                  //     onPressed: () {
+                  //       setState(() {
+                  //         all = gameLogic(all: all, task: "U");
+                  //         all = randomTwoGenerator(all);
+                  //       });
+                  //     },
+                  //     child: const Text("UP")),
+                  // TextButton(
+                  //     onPressed: () {
+                  //       setState(() {
+                  //         all = gameLogic(all: all, task: "L");
+                  //         all = randomTwoGenerator(all);
+                  //       });
+                  //     },
+                  //     child: const Text("Left")),
+                  // TextButton(
+                  //     onPressed: () {
+                  //       setState(() {
+                  //         all = gameLogic(all: all, task: "R");
+                  //         all = randomTwoGenerator(all);
+                  //       });
+                  //     },
+                  //     child: const Text("Right")),
+                ],
               ),
-              TextButton(
-                  onPressed: () {
-                    setState(() {
-                      all = gameLogic(all: all, task: "D");
-                    });
-                  },
-                  child: const Text("Down")),
-              TextButton(
-                  onPressed: () {
-                    setState(() {
-                      all = gameLogic(all: all, task: "U");
-                    });
-                  },
-                  child: const Text("UP")),
-              TextButton(
-                  onPressed: () {
-                    setState(() {
-                      all = gameLogic(all: all, task: "L");
-                    });
-                  },
-                  child: const Text("Left")),
-              TextButton(
-                  onPressed: () {
-                    setState(() {
-                      all = gameLogic(all: all, task: "R");
-                    });
-                  },
-                  child: const Text("Right"))
-            ],
+            ),
           ),
         ),
       ),
@@ -96,12 +147,10 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-List getSingleList(List original) {
-  List converted = [];
-  for (int i = 0; i <= 3; i++) {
-    for (int j = 0; j <= 3; j++) {
-      converted.add(original[i][j]);
-    }
-  }
-  return converted;
-}
+class LeftIntent extends Intent {}
+
+class RightIntent extends Intent {}
+
+class DownIntent extends Intent {}
+
+class UpIntent extends Intent {}
