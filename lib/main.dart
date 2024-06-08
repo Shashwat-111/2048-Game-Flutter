@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:game_2048/game_logic.dart';
 
 void main() {
@@ -71,74 +73,55 @@ class _MyAppState extends State<MyApp> {
                       }),
             },
             child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / 2,
-                    width: MediaQuery.of(context).size.height / 2,
-                    child: Focus(
-                      autofocus: true,
-                      child: GridView.builder(
-                        itemCount: newList.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 4,
-                                crossAxisSpacing: 10,
-                                mainAxisSpacing: 10),
-                        itemBuilder: (context, index) {
-                          return Container(
-                            color: Colors.black,
-                            height: 10,
-                            width: 30,
-                            child: Center(
-                                child: Text(
-                              newList[index].toString(),
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize:
-                                      MediaQuery.of(context).size.height / 17),
-                            )),
-                          );
-                        },
+              child: Stack(alignment: Alignment.center, children: [
+                Container(
+                    color: const Color.fromRGBO(250, 248, 239,1)), //for background color
+                Container(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    color: Color.fromRGBO(187, 173, 160, 1),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height / 1.7,
+                      width: MediaQuery.of(context).size.height / 1.7,
+                      child: Focus(
+                        autofocus: true,
+                        child: GridView.builder(
+                          itemCount: newList.length,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 4,
+                                  crossAxisSpacing: 10,
+                                  mainAxisSpacing: 10),
+                          itemBuilder: (context, index) {
+                            return Container(
+                              decoration: const BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5)),
+                                  color: Color.fromRGBO(205, 193, 180, 1)),
+                              height: 10,
+                              width: 30,
+                              child: Center(
+                                  child: Text(
+                                newList[index].toString(),
+                                style: TextStyle(
+                                    color:
+                                        const Color.fromRGBO(120, 111, 102, 1),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize:
+                                        MediaQuery.of(context).size.height /
+                                            17),
+                              )),
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ),
-                  // TextButton(
-                  //     onPressed: () {
-                  //       setState(() {
-                  //         all = gameLogic(all: all, task: "D");
-                  //         all = randomTwoGenerator(all);
-                  //       });
-                  //     },
-                  //     child: const Text("Down")),
-                  // TextButton(
-                  //     onPressed: () {
-                  //       setState(() {
-                  //         all = gameLogic(all: all, task: "U");
-                  //         all = randomTwoGenerator(all);
-                  //       });
-                  //     },
-                  //     child: const Text("UP")),
-                  // TextButton(
-                  //     onPressed: () {
-                  //       setState(() {
-                  //         all = gameLogic(all: all, task: "L");
-                  //         all = randomTwoGenerator(all);
-                  //       });
-                  //     },
-                  //     child: const Text("Left")),
-                  // TextButton(
-                  //     onPressed: () {
-                  //       setState(() {
-                  //         all = gameLogic(all: all, task: "R");
-                  //         all = randomTwoGenerator(all);
-                  //       });
-                  //     },
-                  //     child: const Text("Right")),
-                ],
-              ),
+                ),
+              ]),
             ),
           ),
         ),
